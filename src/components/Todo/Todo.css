@@ -1,0 +1,78 @@
+.main__list-item {
+  position: relative;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  background-color: #bcd8db50;
+  border-radius: 5px;
+  padding: 15px;
+  border: 2px solid #1212124d;
+  min-height: 87px;
+}
+
+.main__list-item_done {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.main__list-item-expired {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  text-transform: uppercase;
+  color: red;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.main__list-item-title {
+  margin: 0 0 4px 0;
+}
+
+.main__list-item-deadline {
+  margin: 0;
+}
+
+.main__list-item-subtitle {
+  margin: 0 0 2px 0;
+}
+
+.main__list-item-btn-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.main__list-item-btn-del {
+  appearance: none;
+  background: url('../../images/delete.svg');
+  width: 22px;
+  height: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+.main__list-item-btn-del:hover {
+  opacity: 0.7;
+}
+
+.main__list-item-btn-done {
+  align-self: center;
+  justify-self: flex-end;
+  appearance: none;
+  background: url('../../images/done.svg');
+  width: 22px;
+  height: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+.main__list-item-btn-done:hover {
+  opacity: 0.7;
+}
+
+.main__list-item-btn-done-disabled {
+  background: url('../../images/done-disabled.svg');
+}
