@@ -151,7 +151,12 @@ function App() {
         </form>
         <ul className="main__list">
           {todos.map((todo) => (
-            <Todo key={todo.id} toDoObj={todo} onTaskDelete={deleteTodo} onTaskDone={doneTodo} />
+            <Todo
+              key={todo.id}
+              toDoObj={todo}
+              onTaskDelete={deleteTodo}
+              onTaskDone={doneTodo}
+            />
           ))}
         </ul>
       </main>

@@ -1,15 +1,16 @@
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import React from 'react';
 import './Todo.css';
 
 const Todo = ({ toDoObj, onTaskDelete, onTaskDone }) => {
   const { todo, deadline, file, link, isDone } = toDoObj.item;
   // Текущая дата
-  const currentDate = new Date(new Date().toISOString().split('T')[0]).getTime();
+  const currentDate = dayjs(new Date().toISOString().split('T')[0]);
   // Проверка, просрочена ли задача
   const isExpired = (() => {
-    const toDoDeadline = new Date(deadline).getTime();
-    return currentDate > toDoDeadline ? true : false;
+    const toDoDeadline = dayjs(deadline);
+    return toDoDeadline.diff(currentDate, 'day') < 0 ? true : false;
   })();
 
   return (
@@ -33,7 +34,10 @@ const Todo = ({ toDoObj, onTaskDelete, onTaskDone }) => {
           )}
           onClick={() => onTaskDone(toDoObj)}
         ></button>
-        <button className="main__list-item-btn-del" onClick={() => onTaskDelete(toDoObj)}></button>
+        <button
+          className="main__list-item-btn-del"
+          onClick={() => onTaskDelete(toDoObj)}
+        ></button>
       </div>
     </li>
   );
