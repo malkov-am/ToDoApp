@@ -18,7 +18,9 @@ const Todo = ({ toDoObj, onTaskDelete, onTaskDone }) => {
       {isExpired && <p className="main__list-item-expired">Срок истек</p>}
       <div className="main__list-item-wrapper">
         <h2 className="main__list-item-title">{todo}</h2>
-        <p className="main__list-item-deadline">Дедлайн: {deadline}</p>
+        <p className="main__list-item-deadline">
+          Дедлайн: {dayjs(deadline).format('DD.MM.YYYY')} г.
+        </p>
         {file && (
           <>
             <p className="main__list-item-subtitle">Прикрепленный файл: </p>
