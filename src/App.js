@@ -22,14 +22,20 @@ import Todo from './components/Todo/Todo';
 import { db } from './firebase';
 
 function App() {
-  // Переменные состояния
+  /**
+   * Переменные состояния.
+   */
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
   const [file, setFile] = useState('');
   const [deadline, setDeadline] = useState('');
-  // Управление инпутом выбора файла
+  /**
+   * Управление инпутом выбора файла.
+   */
   const fileInputRef = useRef('');
-  // Обновление перечня заданий
+  /**
+   * Обновление перечня заданий.
+   */
   const q = query(collection(db, 'todos'), orderBy('timestamp', 'desc'));
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
@@ -41,7 +47,14 @@ function App() {
       );
     });
   }, [input]);
-  // Функция отправки запроса на добавление задания
+  /**
+   * Функция отправки запроса на добавление задания.
+   * @param {string} todo - Текст задачи.
+   * @param {string} deadline - Дата дедлайна в формате "ГГГГ-ММ-ДД".
+   * @param {string} file - Имя прикрепляемого файла.
+   * @param {string} link - Ссылка на загрузку прикрепленного файла.
+   * @param {boolean} isDone - Переменная, обозначающая выполнение задания. Для нового задания подставляется значение false.
+   */
   function setTodo(todo, deadline, file = '', link = '', isDone = false) {
     addDoc(collection(db, 'todos'), {
       todo,
@@ -53,7 +66,9 @@ function App() {
     });
   }
   const storage = getStorage();
-  // Функция добавления задания
+  /**
+   * Функция добавления задания.
+   */
   function addTodo(evt) {
     evt.preventDefault();
     if (file) {
@@ -79,32 +94,50 @@ function App() {
     setFile('');
     fileInputRef.current.value = '';
   }
-  // Функция удаления задания
-  function deleteTodo(todo) {
-    deleteDoc(doc(db, 'todos', todo.id));
-    if (todo.item.file) {
-      const storageRef = ref(storage, `/files/${todo.item.file}`);
+  /**
+   * Функция удаления задания.
+   * @param {object} toDoObj - Объект, включающий объект с задачей и id.
+   * Включает в себя поля:
+   * id {string} - Идентификатор задачи.
+   * item {object} - Объект с задачей.
+   */
+  function deleteTodo(toDoObj) {
+    deleteDoc(doc(db, 'todos', toDoObj.id));
+    if (toDoObj.item.file) {
+      const storageRef = ref(storage, `/files/${toDoObj.item.file}`);
       deleteObject(storageRef).catch((error) => {
         console.error(error);
       });
     }
   }
-  // Пометить задачу выполненнной
-  function doneTodo(todo) {
-    const isDone = todo.item.isDone;
-    updateDoc(doc(db, 'todos', todo.id), {
+  /**
+   * Функция отметки задачи как выполненной.
+   * @param {object} toDoObj - Объект, включающий объект с задачей и id.
+   * Включает в себя поля:
+   * id {string} - Идентификатор задачи.
+   * item {object} - Объект с задачей.
+   */
+  function doneTodo(toDoObj) {
+    const isDone = toDoObj.item.isDone;
+    updateDoc(doc(db, 'todos', toDoObj.id), {
       isDone: isDone ? false : true,
     });
   }
-  // Обработчик поля ввода задачи
+  /**
+   * Обработчик поля ввода задачи.
+   */
   function handleAddTodo(evt) {
     setInput(evt.target.value);
   }
-  // Обработчик поля вставки файла
+  /**
+   * Обработчик поля вставки файла.
+   */
   function handleAttachFile(evt) {
     setFile(evt.target.files[0]);
   }
-  // Обработчик поля ввода даты
+  /**
+   * Обработчик поля ввода даты.
+   */
   function handleSetDate(evt) {
     setDeadline(evt.target.value);
   }
@@ -150,10 +183,10 @@ function App() {
           </div>
         </form>
         <ul className="main__list">
-          {todos.map((todo) => (
+          {todos.map((toDoObj) => (
             <Todo
-              key={todo.id}
-              toDoObj={todo}
+              key={toDoObj.id}
+              toDoObj={toDoObj}
               onTaskDelete={deleteTodo}
               onTaskDone={doneTodo}
             />

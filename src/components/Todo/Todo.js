@@ -5,9 +5,14 @@ import './Todo.css';
 
 const Todo = ({ toDoObj, onTaskDelete, onTaskDone }) => {
   const { todo, deadline, file, link, isDone } = toDoObj.item;
-  // Текущая дата
+  /**
+   * Текущая дата.
+   */
   const currentDate = dayjs(new Date().toISOString().split('T')[0]);
-  // Проверка, просрочена ли задача
+  /**
+   * Функция, проверяющая, просрочена ли задача. Возвращает true или false.
+   * @returns {boolean}
+   */
   const isExpired = (() => {
     const toDoDeadline = dayjs(deadline);
     return toDoDeadline.diff(currentDate, 'day') < 0 ? true : false;
